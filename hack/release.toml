@@ -16,13 +16,27 @@ preface = """\
 [notes]
     [notes.updates]
         title = "Component Updates"
+
+
         description = """\
 Kubernetes: 1.29.2
-Linux: 6.1.78
+Linux: 6.6.17
+arm-trusted-firmware: 2.10.2
 
 Talos is built with Go 1.21.6.
 """
 
+   [notes.fanspeed]
+        title = "Turing RK1: fan speed"
+        description = """\
+The fanspeed curve has been adjusted to be more idle in lite cpu load utilization scenarios.
+"""
+
+    [notes.usb2]
+         title = "Turing RK1: USB2"
+         description = """\
+USB2 support has been restored. It was broken in Talos 1.6.4.
+"""
 
     [notes.k8supgrade]
         title = "Kubernetes Upgrade"
