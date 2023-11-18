@@ -14,10 +14,22 @@ preface = """\
 """
 
 [notes]
+    [note.turing-rk1-hardware]
+        title = "Turing RK1 hardware support"
+        description = """\
+ - Fix for corrupted tagged vlan frames
+ - USB hotplug support
+ - Increased Network troughput
+ - Increased boot performance
+"""
     [notes.updates]
         title = "Component Updates"
+
+
         description = """\
-Linux: 6.1.73
+Linux: 6.6.12
+containerd: 1.7.11
+u-boot: 2024-01
 
 Talos is built with Go 1.21.6.
 """
