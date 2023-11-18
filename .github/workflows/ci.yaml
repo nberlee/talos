@@ -1,0 +1,95 @@
+name: Talos Image
+
+on:
+  push:
+    branches: [ 'turingrk1', 'release-*' ]
+    tags:
+      - "v*"
+
+jobs:
+  talos-image:
+    runs-on: buildjet-4vcpu-ubuntu-2204-arm
+
+    permissions:
+      actions: read
+      contents: write
+      issues: read
+      packages: write
+      pull-requests: read
+
+    steps:
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # need history for `git describe` to work for Talos `Makefile`
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Build and push Talos installer image
+        run: make installer
+        env:
+          PUSH: '1'
+          USERNAME: ${{ github.actor }}
+          PLATFORM: linux/arm64
+          PROGRESS: plain
+          CI_ARGS: "--cache-from=ghcr.io/${{ github.actor }}/installer:cache --cache-to=ghcr.io/${{ github.actor }}/installer:cache"
+
+      - name: Build and push Talos imager image
+        run: make imager
+        env:
+          PUSH: '1'
+          USERNAME: ${{ github.actor }}
+          PLATFORM: linux/arm64
+          INSTALLER_ARCH: arm64
+          PROGRESS: plain
+          CI_ARGS: "--cache-from=ghcr.io/${{ github.actor }}/imager:cache --cache-to=ghcr.io/${{ github.actor }}/imager:cache"
+
+      - name: release-notes
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          mkdir -p _out
+          make release-notes
+
+      - name: Build an turing-rk1 flashable image
+        run: make sbc-turing_rk1
+        env:
+          USERNAME: ${{ github.actor }}
+          PLATFORM: linux/arm64
+          PROGRESS: plain
+          IMAGER_ARGS: "--system-extension-image ghcr.io/nberlee/rk3588:v1.6.7"
+
+      - name: Build an turing-rk1 installer
+        run: |
+          make sbc-installer
+          curl -sL "https://github.com/google/go-containerregistry/releases/download/v0.19.0/go-containerregistry_Linux_arm64.tar.gz" | tar -zxv -C /usr/local/bin/ crane
+          IMAGETAG=$(git describe --tag --always --dirty --match v[0-9]\*)
+          crane push _out/installer-arm64.tar ghcr.io/nberlee/installer:$IMAGETAG-rk3588
+        env:
+          USERNAME: ${{ github.actor }}
+          PLATFORM: linux/arm64
+          PROGRESS: plain
+          IMAGER_ARGS: "--system-extension-image ghcr.io/nberlee/rk3588:v1.6.7"
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: image-turing-rk1
+          path: _out/*.raw.xz
+          if-no-files-found: error
+
+      - name: Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: crazy-max/ghaction-github-release@v2
+        with:
+          body_path: _out/RELEASE_NOTES.md
+          draft: "true"
+          files: |
+            _out/metal-turing_rk1-arm64.raw.xz
