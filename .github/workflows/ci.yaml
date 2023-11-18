@@ -65,6 +65,7 @@ jobs:
           USERNAME: ${{ github.actor }}
           PLATFORM: linux/arm64
           PROGRESS: plain
+          IMAGER_ARGS: "--system-extension-image ghcr.io/nberlee/rk3588:v1.6.3"
 
       - uses: actions/upload-artifact@v3
         with:
