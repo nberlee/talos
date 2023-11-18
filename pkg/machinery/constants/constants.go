@@ -16,7 +16,7 @@ import (
 
 const (
 	// DefaultKernelVersion is the default Linux kernel version.
-	DefaultKernelVersion = "6.1.67-talos"
+	DefaultKernelVersion = "6.6.7-talos"
 
 	// KernelModulesPath is the default path to the kernel modules without the kernel version.
 	KernelModulesPath = "/lib/modules"
@@ -111,6 +111,9 @@ const (
 
 	// BoardNanoPiR4S is the name of the Friendlyelec Nano Pi R4S.
 	BoardNanoPiR4S = "nanopi_r4s"
+
+	// BoardTuringRK1 is the name of the Turing Pi RK1 board.
+	BoardTuringRK1 = "turing_rk1"
 
 	// KernelParamHostname is the kernel parameter name for specifying the
 	// hostname.

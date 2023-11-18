@@ -14,6 +14,24 @@ preface = """\
 """
 
 [notes]
+    [notes.kernel]
+        title = "New LTS Kernel"
+        description = """\
+This fork comes with a new LTS Kernel v6.6.
+It was needed to upgrade it because of the support for the RK3588. It also has some upstream patches from 6.7-rc.
+"""
+    [notes.board]
+        title = "Turing RK1 support"
+        description = """\
+This fork has Turing RK1 board support. Everything should work except for HDMI and UART2 serial console.
+Make sure to add the extension `ghcr.io/nberlee/rk3588:v1.6.x` to the machine config and add `rockchip-cpyfreq` to machine.kernel.module:
+```yaml
+machine:
+  kernel:
+    modules:
+      - name: rockchip-cpufreq
+```
+"""
     [notes.firmware]
         title = "Linux Firmware"
         description = """\
@@ -55,13 +73,15 @@ Any kernel argument that starts with a `-` is dropped. Kernel arguments to be dr
     [notes.updates]
         title = "Component Updates"
         description = """\
-Linux: 6.1.67
+Linux: 6.6.7
 containerd: 1.7.10
 CoreDNS: 1.11.1
 Kubernetes: 1.29.0
 Flannel: 0.23.0
 etcd: 3.5.11
 runc: 1.1.10
+u-boot: 2024.01-rc4
+arm-trusted-firmware: 2.10.0
 
 Talos is built with Go 1.21.5.
 """

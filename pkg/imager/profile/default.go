@@ -367,4 +367,18 @@ var Default = map[string]Profile{
 			},
 		},
 	},
+	constants.BoardTuringRK1: {
+		Arch:       "arm64",
+		Platform:   constants.PlatformMetal,
+		Board:      constants.BoardTuringRK1,
+		SecureBoot: pointer.To(false),
+		Output: Output{
+			Kind:      OutKindImage,
+			OutFormat: OutFormatXZ,
+			ImageOptions: &ImageOptions{
+				DiskSize:   MinRAWDiskSize,
+				DiskFormat: DiskFormatRaw,
+			},
+		},
+	},
 }
