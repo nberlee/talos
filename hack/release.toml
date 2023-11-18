@@ -14,11 +14,25 @@ preface = """\
 """
 
 [notes]
+    [notes.installer]
+        title = "Installer Turingrk1 image"
+
+
+        description = """\
+When upgrading using `talosctl upgrade -i` a `-rk3588` can be added to the install image tag to get the image
+with the rk3588 extension. This eliminates the need for defining the extension in the machine config.
+
+Please remove the extension from the machine config before using 
+`talosctl upgrade -i ghcr.io/nberlee/installer:v1.6.4-rk3588`
+"""
     [notes.updates]
         title = "Component Updates"
+
+
         description = """\
 containerd: 1.7.13
 runc: 1.1.12
+Linux: 6.6.15
 
 See [CVE-2024-21626](https://github.com/opencontainers/runc/security/advisories/GHSA-xr7r-f8xq-vfvv) for the runc update.
 

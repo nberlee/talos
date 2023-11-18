@@ -14,7 +14,46 @@
 </p>
 
 ---
+# Friendly fork
+This is a friendly fork of [siderolabs/talos](siderolabs/talos). It is only here to support [SBC Turing RK1](https://turingpi.com/product/turing-rk1/). And it will be integrated in some way using [community managed SBCs](https://github.com/siderolabs/talos/issues/8065) in Talos 1.7.
 
+## Using this fork
+[![asciicast](https://asciinema.org/a/635709.svg)](https://asciinema.org/a/635709)
+
+### Download the latest release on the right
+
+This describes the CLI commands, you may use the Turing PI webgui. Always first unpack the image yourself. Version 2.06 supports xz images, but it is slower.
+```sh
+xz -d metal-turing_rk1-arm64.raw.xz
+tpi flash -n <NODENUMBER> -i metal-turing_rk1-arm64.raw
+tpi power on -n <NODENUMBER> 
+```
+
+To check bootmessages:
+```sh
+tpi uart -n <NODENUMBER> get
+```
+
+Make sure when you use talosctl apply-config to have in this config:
+```yaml
+machine:
+  kernel:
+    modules:
+      - name: rockchip-cpufreq
+```
+
+### Updating
+
+Updating can also be done faster using the `talosctl upgrade` command.
+
+```sh
+talosctl upgrade -i ghcr.io/nberlee/installer:v1.6.x-rk3588
+```
+when adding the `-rk3588` to the tag, the rk3588 extension is no longer needed in the machine-config.
+For example the `ghcr.io/nberlee/installer:v1.6.4-rk3588` installer image has the rk3588 talos extension included
+
+
+# Talos
 **Talos** is a modern OS for running Kubernetes: secure, immutable, and minimal.
 Talos is fully open source, production-ready, and supported by the people at [Sidero Labs](https://www.SideroLabs.com/)
 All system management is done via an API - there is no shell or interactive console.
