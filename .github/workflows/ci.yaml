@@ -65,7 +65,7 @@ jobs:
           USERNAME: ${{ github.actor }}
           PLATFORM: linux/arm64
           PROGRESS: plain
-          IMAGER_ARGS: "--system-extension-image ghcr.io/nberlee/rk3588:v1.6.7"
+          IMAGER_ARGS: "--system-extension-image ghcr.io/nberlee/rk3588:v1.6.7-1-g4c38887"
 
       - name: Build an turing-rk1 installer
         run: |
@@ -77,7 +77,7 @@ jobs:
           USERNAME: ${{ github.actor }}
           PLATFORM: linux/arm64
           PROGRESS: plain
-          IMAGER_ARGS: "--system-extension-image ghcr.io/nberlee/rk3588:v1.6.7"
+          IMAGER_ARGS: "--system-extension-image ghcr.io/nberlee/rk3588:v1.6.7-1-g4c38887"
 
       - uses: actions/upload-artifact@v3
         with:
