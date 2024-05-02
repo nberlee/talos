@@ -1,4 +1,0 @@
-apiVersion: v1alpha1
-kind: KmsgLogConfig
-name: apiSink
-url: https://kmsglog.api/logs

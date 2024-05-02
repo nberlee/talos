@@ -2,7 +2,7 @@ name: Talos Image
 
 on:
   push:
-    branches: [ 'turingrk1', 'release-*' ]
+    branches: [ 'release-*' ]
     tags:
       - "v*"
 
@@ -30,6 +30,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          repository: siderolabs/talos
+          ref: v1.7.1
           # need history for `git describe` to work for Talos `Makefile`
           fetch-depth: 0
           fetch-tags: true
@@ -38,6 +40,7 @@ jobs:
         run: make installer
         env:
           PUSH: '1'
+          PKG_KERNEL: ghcr.io/nberlee/kernel:v1.7.1
           USERNAME: ${{ github.actor }}
           PLATFORM: linux/arm64
           PROGRESS: plain
@@ -47,6 +50,7 @@ jobs:
         run: make imager
         env:
           PUSH: '1'
+          PKG_KERNEL: ghcr.io/nberlee/kernel:v1.7.1
           USERNAME: ${{ github.actor }}
           PLATFORM: linux/arm64
           INSTALLER_ARCH: arm64
@@ -60,24 +64,24 @@ jobs:
           make release-notes
 
       - name: Build an turing-rk1 flashable image
-        run: make sbc-turing_rk1
+        run: make image-metal
         env:
           USERNAME: ${{ github.actor }}
           PLATFORM: linux/arm64
           PROGRESS: plain
-          IMAGER_ARGS: "--system-extension-image ghcr.io/nberlee/rk3588:v1.6.7-1-g4c38887"
+          IMAGER_ARGS: "--system-extension-image ghcr.io/nberlee/rk3588:v1.7.1 --overlay-image ghcr.io/nberlee/sbc-turingrk1:v1.7.1 --overlay-name=turingrk1"
 
       - name: Build an turing-rk1 installer
         run: |
-          make sbc-installer
-          curl -sL "https://github.com/google/go-containerregistry/releases/download/v0.19.0/go-containerregistry_Linux_arm64.tar.gz" | tar -zxv -C /usr/local/bin/ crane
+          make image-installer
+          curl -sL "https://github.com/google/go-containerregistry/releases/download/v0.19.1/go-containerregistry_Linux_arm64.tar.gz" | tar -zxv -C /usr/local/bin/ crane
           IMAGETAG=$(git describe --tag --always --dirty --match v[0-9]\*)
           crane push _out/installer-arm64.tar ghcr.io/nberlee/installer:$IMAGETAG-rk3588
         env:
           USERNAME: ${{ github.actor }}
           PLATFORM: linux/arm64
           PROGRESS: plain
-          IMAGER_ARGS: "--system-extension-image ghcr.io/nberlee/rk3588:v1.6.7-1-g4c38887"
+          IMAGER_ARGS: "--system-extension-image ghcr.io/nberlee/rk3588:v1.7.1 --overlay-image ghcr.io/nberlee/sbc-turingrk1:v1.7.1 --overlay-name=turingrk1"
 
       - uses: actions/upload-artifact@v3
         with:

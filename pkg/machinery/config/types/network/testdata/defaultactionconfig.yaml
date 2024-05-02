@@ -1,3 +1,0 @@
-apiVersion: v1alpha1
-kind: NetworkDefaultActionConfig
-ingress: block

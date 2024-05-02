@@ -1,8 +1,0 @@
-machine:
-  kubelet:
-    extraMounts:
-      - source: /var/opt
-        destination: /var/opt
-        type: bind
-        options:
-          - rshared

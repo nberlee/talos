@@ -1,9 +1,0 @@
-machine:
-  network:
-    interfaces:
-      - interface: eth1
-        vlans:
-          - vlanId: 100
-            addresses: [10.3.4.6]
-          - vlanId: 101
-            addresses: [10.3.4.7]
