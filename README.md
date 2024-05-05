@@ -15,7 +15,7 @@
 
 ---
 # Friendly fork
-This is a friendly fork of [siderolabs/talos](siderolabs/talos). It is only here to support [SBC Turing RK1](https://turingpi.com/product/turing-rk1/). And it will be integrated in some way using [community managed SBCs](https://github.com/siderolabs/talos/issues/8065) in Talos 1.7.
+This is a friendly fork of [siderolabs/talos](siderolabs/talos). It is only here to support [SBC Turing RK1](https://turingpi.com/product/turing-rk1/). And it will be integrated in some way using [community managed SBCs](https://github.com/siderolabs/talos/issues/8065) in Talos 1.8? I am still waiting for custom kernel support.
 
 ## Using this fork
 [![asciicast](https://asciinema.org/a/635709.svg)](https://asciinema.org/a/635709)
@@ -49,10 +49,10 @@ for an extended installation guide with cilium see issue #1
 Updating can also be done faster using the `talosctl upgrade` command.
 
 ```sh
-talosctl upgrade -i ghcr.io/nberlee/installer:v1.6.x-rk3588
+talosctl upgrade -i ghcr.io/nberlee/installer:v1.7.x-rk3588
 ```
-when adding the `-rk3588` to the tag, the rk3588 extension is no longer needed in the machine-config.
-For example the `ghcr.io/nberlee/installer:v1.6.4-rk3588` installer image has the rk3588 talos extension included
+when adding the `-rk3588` to the tag, the rk3588 extension is *only* needed in the machine-config when also other extensions are defined there.
+For example the `ghcr.io/nberlee/installer:v1.7.1-rk3588` installer image has the rk3588 talos extension included. But its removed when another extension is defined.
 
 
 # Talos
