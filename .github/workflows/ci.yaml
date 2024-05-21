@@ -7,10 +7,10 @@ on:
       - "v*"
 
 env:
-  ORIGIN_TAG: v1.7.1
-  KERNEL_TAG: v1.7.1
-  SBC_TAG: v1.7.1
-  RK3588_TAG: v1.7.1
+  ORIGIN_TAG: v1.7.2
+  KERNEL_TAG: v1.7.2
+  SBC_TAG: v1.7.2
+  RK3588_TAG: v1.7.2
 
 jobs:
   talos-build:
@@ -120,4 +120,4 @@ jobs:
           body_path: _out/RELEASE_NOTES.md
           draft: "true"
           files: |
-            _out/metal-turing_rk1-arm64.raw.xz
+            _out/metal-arm64.raw.xz
