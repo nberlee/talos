@@ -47,7 +47,7 @@ jobs:
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             echo "PUBLISH_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
           else
-            echo "PUBLISH_TAG=${GITHUB_SHA}" >> $GITHUB_ENV
+            echo "PUBLISH_TAG=${ORIGIN_TAG}-${GITHUB_SHA::10}" >> $GITHUB_ENV
           fi
         shell: bash
 
@@ -92,6 +92,7 @@ jobs:
         run: make image-metal
         env:
           USERNAME: ${{ github.actor }}
+          TAG: ${{ env.PUBLISH_TAG }}
           PLATFORM: linux/arm64
           PROGRESS: plain
           IMAGER_ARGS: "--base-installer-image ghcr.io/nberlee/installer:${{ env.PUBLISH_TAG }}-nosbclayer --system-extension-image ghcr.io/nberlee/rk3588:${{ env.RK3588_TAG }} --overlay-image ghcr.io/nberlee/sbc-turingrk1:${{ env.SBC_TAG }} --overlay-name=turingrk1"
@@ -103,6 +104,7 @@ jobs:
           crane push _out/installer-arm64.tar ghcr.io/nberlee/installer:${{ env.PUBLISH_TAG }}-rk3588
         env:
           USERNAME: ${{ github.actor }}
+          TAG: ${{ env.PUBLISH_TAG }}
           PLATFORM: linux/arm64
           PROGRESS: plain
           IMAGER_ARGS: "--base-installer-image ghcr.io/nberlee/installer:${{ env.PUBLISH_TAG }}-nosbclayer --system-extension-image ghcr.io/nberlee/rk3588:${{ env.RK3588_TAG }} --overlay-image ghcr.io/nberlee/sbc-turingrk1:${{ env.SBC_TAG }} --overlay-name=turingrk1"
