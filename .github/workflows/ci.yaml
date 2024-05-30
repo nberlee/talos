@@ -7,10 +7,10 @@ on:
       - "v*"
 
 env:
-  ORIGIN_TAG: v1.7.3
+  ORIGIN_TAG: v1.7.4
   KERNEL_TAG: v1.7.3
-  SBC_TAG: v1.7.3
-  RK3588_TAG: v1.7.3
+  SBC_TAG: v1.7.4
+  RK3588_TAG: v1.7.4
 
 jobs:
   talos-build:
