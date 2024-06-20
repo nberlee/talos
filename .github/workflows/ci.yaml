@@ -48,7 +48,7 @@ jobs:
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             echo "PUBLISH_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
           else
-            echo "PUBLISH_TAG=${ORIGIN_TAG}-${GITHUB_SHA::10}" >> $GITHUB_ENV
+            echo "PUBLISH_TAG=${ORIGIN_TAG#*/}-${GITHUB_SHA::10}" >> $GITHUB_ENV
           fi
         shell: bash
 
