@@ -7,10 +7,11 @@ on:
       - "v*"
 
 env:
-  ORIGIN_TAG: v1.7.4
-  KERNEL_TAG: v1.7.3
-  SBC_TAG: v1.7.4
-  RK3588_TAG: v1.7.4
+  ORIGIN_REPO: frezbo/talos
+  ORIGIN_TAG: backports/v1.7.5
+  KERNEL_TAG: v1.7.3-2-g2e4e948
+  SBC_TAG: v1.7.4-1-g56fbc40
+  RK3588_TAG: v1.7.4-1-g7cd75ea
 
 jobs:
   talos-build:
@@ -36,7 +37,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          repository: siderolabs/talos
+          repository: ${{ env.ORIGIN_REPO }}
           ref: ${{ env.ORIGIN_TAG }}
           # need history for `git describe` to work for Talos `Makefile`
           fetch-depth: 0
