@@ -7,11 +7,11 @@ on:
       - "v*"
 
 env:
-  ORIGIN_REPO: frezbo/talos
-  ORIGIN_TAG: backports/v1.7.5
-  KERNEL_TAG: v1.7.3-2-g2e4e948
-  SBC_TAG: v1.7.4-1-g56fbc40
-  RK3588_TAG: v1.7.4-1-g7cd75ea
+  ORIGIN_REPO: siderolabs/talos
+  ORIGIN_TAG: v1.7.5
+  KERNEL_TAG: v1.7.5
+  SBC_TAG: v1.7.5
+  RK3588_TAG: v1.7.5
 
 jobs:
   talos-build:
