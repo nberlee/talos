@@ -9,9 +9,9 @@ on:
 env:
   ORIGIN_REPO: siderolabs/talos
   ORIGIN_TAG: v1.7.5
-  KERNEL_TAG: v1.7.5
-  SBC_TAG: v1.7.5
-  RK3588_TAG: v1.7.5
+  KERNEL_TAG: v1.7.5-1-g37f199f
+  SBC_TAG: v1.7.5-1-g5295cee
+  RK3588_TAG: v1.7.5-1-gce48ba2
 
 jobs:
   talos-build:
