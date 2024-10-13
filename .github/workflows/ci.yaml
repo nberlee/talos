@@ -8,14 +8,15 @@ on:
 
 env:
   ORIGIN_REPO: siderolabs/talos
-  ORIGIN_TAG: v1.7.6
-  KERNEL_TAG: v1.7.6
-  SBC_TAG: v1.7.6
-  RK3588_TAG: v1.7.6
+  ORIGIN_TAG: v1.8.1
+  KERNEL_TAG: v1.8.1
+  SBC_TAG: v1.8.1
+  RK3588_TAG: v1.8.1
 
 jobs:
   talos-build:
-    runs-on: buildjet-4vcpu-ubuntu-2204-arm
+    #runs-on: buildjet-4vcpu-ubuntu-2204-arm
+    runs-on: ubuntu-latest
 
     permissions:
       actions: read
@@ -82,7 +83,7 @@ jobs:
           mkdir -p _out
           # Hack for ARM64 release tool
           mv hack/release.sh hack/release.sh.old
-          curl -sL "https://raw.githubusercontent.com/nberlee/talos/release-1.7-turingrk1/hack/release.sh" -o hack/release.sh
+          curl -sL "https://raw.githubusercontent.com/nberlee/talos/release-1.8-turingrk1/hack/release.sh" -o hack/release.sh
           chmod +x hack/release.sh
           export TAG=${GITHUB_REF#refs/tags/}
           
@@ -90,7 +91,10 @@ jobs:
           mv hack/release.sh.old hack/release.sh
           
       - name: Build an turing-rk1 flashable image
-        run: make image-metal
+        run: |
+          make image-metal
+          sudo zstd -d _out/metal-arm64.raw.zst
+          sudo xz _out/metal-arm64.raw
         env:
           USERNAME: ${{ github.actor }}
           TAG: ${{ env.PUBLISH_TAG }}
@@ -101,7 +105,7 @@ jobs:
       - name: Build an turing-rk1 installer
         run: |
           make image-installer
-          curl -sL "https://github.com/google/go-containerregistry/releases/download/v0.19.1/go-containerregistry_Linux_arm64.tar.gz" | tar -zxv -C /usr/local/bin/ crane
+          curl -sL "https://github.com/google/go-containerregistry/releases/download/v0.20.2/go-containerregistry_$(uname -s)_$(uname -m).tar.gz" | tar -zxv -C /usr/local/bin/ crane
           crane push _out/installer-arm64.tar ghcr.io/nberlee/installer:${{ env.PUBLISH_TAG }}-rk3588
         env:
           USERNAME: ${{ github.actor }}
@@ -123,4 +127,4 @@ jobs:
           body_path: _out/RELEASE_NOTES.md
           draft: "true"
           files: |
-            _out/metal-arm64.raw.xz
+            _out/metal-arm64.raw.*
