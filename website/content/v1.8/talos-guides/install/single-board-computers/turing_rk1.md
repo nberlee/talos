@@ -46,7 +46,7 @@ Proceed to [bootstrapping the node](#bootstrapping-the-node).
 
 ### Booting from USB or NVMe
 
-This requires the user to flash the Turing RK1 with a u-boot SPI image.
+This requires the user to flash the Turing RK1 with a u-boot SPI image, which is parts of the SBC overlay.
 
 If you have a USB to NVMe adapter, write Talos image to the USB drive:
 
@@ -62,14 +62,14 @@ Otherwise, if the NVMe drive is already installed in the Turing Pi board, you ca
 ```bash
 sudo dd if=metal-turing_rk1-arm64.raw of=/dev/NVMe0n1
 ```
-- Download u-boot image from talos u-boot:
+- Download sbc ovberlay image (sbc-turingrk1) from talos and extract the spi image:
 
 ```bash
 mkdir _out
 
-docker pull ghcr.io/nberlee/u-boot:v1.6.0-29-g7be6f52-dirty
-docker save ghcr.io/nberlee/u-boot:v1.6.0-29-g7be6f52-dirty | tar x --strip-components=1 -C _out
-tar xvf _out/layer.tar turing_rk1/u-boot-rockchip-spi.bin
+docker pull ghcr.io/nberlee/sbc-turingrk1:v1.8.<currentversion>
+docker save ghcr.io/nberlee/sbc-turingrk1:v1.8.<currentversion> | tar x --strip-components=1 -C _out
+tar xvf _out/sha256/$(ls _out/sha256/ -1Sr | head -1) --strip-components=4 artifacts/arm64/u-boot/turingrk1/u-boot-rockchip-spi.bin
 ```
 
 As the spi-image may be too small for the BMC you may have to flash the raw image first to the eMMC:
@@ -81,7 +81,7 @@ After this flash the spi image to get rid of all the extra partitions and change
 image will prefer the nvme drive:
 
 ```
-tpi flash -n <NODENUMBER> -i turing_rk1/u-boot-rockchip-spi.bin
+tpi flash -n <NODENUMBER> -i u-boot-rockchip-spi.bin
 tpi power on -n <NODENUMBER> 
 ```
 
