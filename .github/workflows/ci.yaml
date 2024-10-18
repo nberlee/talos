@@ -11,7 +11,7 @@ env:
   ORIGIN_TAG: v1.8.1
   KERNEL_TAG: v1.8.1
   SBC_TAG: v1.8.1
-  RK3588_TAG: v1.8.1
+  RK3588_TAG: v1.8.1-1-g58ff67c
 
 jobs:
   talos-build:
