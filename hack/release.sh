@@ -2,7 +2,7 @@
 
 set -e
 
-RELEASE_TOOL_IMAGE="ghcr.io/nberlee/release-tool:09b5b10-dirty"
+RELEASE_TOOL_IMAGE="ghcr.io/siderolabs/release-tool:latest"
 
 function release-tool {
   docker pull "${RELEASE_TOOL_IMAGE}" >/dev/null

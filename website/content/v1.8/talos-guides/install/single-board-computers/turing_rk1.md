@@ -69,10 +69,10 @@ mkdir _out
 
 docker pull ghcr.io/nberlee/sbc-turingrk1:v1.8.<currentversion>
 docker save ghcr.io/nberlee/sbc-turingrk1:v1.8.<currentversion> | tar x --strip-components=1 -C _out
-tar xvf _out/sha256/$(ls _out/sha256/ -1Sr | head -1) --strip-components=4 artifacts/arm64/u-boot/turingrk1/u-boot-rockchip-spi.bin
+tar xvf _out/sha256/$(ls _out/sha256/ -1S | head -1) --strip-components=4 artifacts/arm64/u-boot/turingrk1/u-boot-rockchip-spi.bin
 ```
 
-As the spi-image may be too small for the BMC you may have to flash the raw image first to the eMMC:
+As the spi-image does not contain the full GPT tables need have to flash the raw image first to the eMMC, *even if you used Talos on eMMC before*:
 ```
 tpi flash -n <NODENUMBER> -i metal-turing_rk1-arm64.raw
 ```
@@ -103,7 +103,12 @@ Following the instructions in the uart output to connect to the interactive inst
 talosctl apply-config --insecure --mode=interactive --nodes <node IP or DNS name>
 ```
 
-Once the interactive installation is applied, the cluster will form and you can then use `kubectl`.
+or use `talosctl gen config` and apply it
+```bash
+talosctl apply-config --insecure --nodes <node IP or DNS name> -f <worker/controlplane>.yaml
+```
+
+Once the (interactive) installation is applied, the cluster will form and you can then use `kubectl`.
 
 ## Retrieve the `kubeconfig`
 

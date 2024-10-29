@@ -7,11 +7,11 @@ on:
       - "v*"
 
 env:
-  ORIGIN_REPO: smira/talos
-  ORIGIN_TAG: backports/v1.8.2
-  KERNEL_TAG: v1.8.1-6-g7553341
-  SBC_TAG: v1.8.1
-  RK3588_TAG: v1.8.1-6-gc9d4a5c
+  ORIGIN_REPO: siderolabs/talos
+  ORIGIN_TAG: v1.8.2
+  KERNEL_TAG: v1.8.2
+  SBC_TAG: v1.8.2
+  RK3588_TAG: v1.8.2
 
 jobs:
   talos-build:
