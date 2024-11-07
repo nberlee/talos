@@ -7,8 +7,8 @@ on:
       - "v*"
 
 env:
-  ORIGIN_REPO: siderolabs/talos
-  ORIGIN_TAG: v1.8.2
+  ORIGIN_REPO: nberlee/talos
+  ORIGIN_TAG: v1.8.200
   KERNEL_TAG: v1.8.2
   SBC_TAG: v1.8.2
   RK3588_TAG: v1.8.2
