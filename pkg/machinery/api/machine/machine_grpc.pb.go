@@ -27,6 +27,7 @@ const (
 	MachineService_Bootstrap_FullMethodName                   = "/machine.MachineService/Bootstrap"
 	MachineService_Containers_FullMethodName                  = "/machine.MachineService/Containers"
 	MachineService_Copy_FullMethodName                        = "/machine.MachineService/Copy"
+	MachineService_CPUFreqStats_FullMethodName                = "/machine.MachineService/CPUFreqStats"
 	MachineService_CPUInfo_FullMethodName                     = "/machine.MachineService/CPUInfo"
 	MachineService_DiskStats_FullMethodName                   = "/machine.MachineService/DiskStats"
 	MachineService_Dmesg_FullMethodName                       = "/machine.MachineService/Dmesg"
@@ -90,6 +91,7 @@ type MachineServiceClient interface {
 	Bootstrap(ctx context.Context, in *BootstrapRequest, opts ...grpc.CallOption) (*BootstrapResponse, error)
 	Containers(ctx context.Context, in *ContainersRequest, opts ...grpc.CallOption) (*ContainersResponse, error)
 	Copy(ctx context.Context, in *CopyRequest, opts ...grpc.CallOption) (MachineService_CopyClient, error)
+	CPUFreqStats(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*CPUFreqStatsResponse, error)
 	CPUInfo(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*CPUInfoResponse, error)
 	DiskStats(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*DiskStatsResponse, error)
 	Dmesg(ctx context.Context, in *DmesgRequest, opts ...grpc.CallOption) (MachineService_DmesgClient, error)
@@ -234,6 +236,16 @@ func (x *machineServiceCopyClient) Recv() (*common.Data, error) {
 		return nil, err
 	}
 	return m, nil
+}
+
+func (c *machineServiceClient) CPUFreqStats(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*CPUFreqStatsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CPUFreqStatsResponse)
+	err := c.cc.Invoke(ctx, MachineService_CPUFreqStats_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *machineServiceClient) CPUInfo(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*CPUInfoResponse, error) {
@@ -975,6 +987,7 @@ type MachineServiceServer interface {
 	Bootstrap(context.Context, *BootstrapRequest) (*BootstrapResponse, error)
 	Containers(context.Context, *ContainersRequest) (*ContainersResponse, error)
 	Copy(*CopyRequest, MachineService_CopyServer) error
+	CPUFreqStats(context.Context, *emptypb.Empty) (*CPUFreqStatsResponse, error)
 	CPUInfo(context.Context, *emptypb.Empty) (*CPUInfoResponse, error)
 	DiskStats(context.Context, *emptypb.Empty) (*DiskStatsResponse, error)
 	Dmesg(*DmesgRequest, MachineService_DmesgServer) error
@@ -1066,6 +1079,9 @@ func (UnimplementedMachineServiceServer) Containers(context.Context, *Containers
 }
 func (UnimplementedMachineServiceServer) Copy(*CopyRequest, MachineService_CopyServer) error {
 	return status.Errorf(codes.Unimplemented, "method Copy not implemented")
+}
+func (UnimplementedMachineServiceServer) CPUFreqStats(context.Context, *emptypb.Empty) (*CPUFreqStatsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CPUFreqStats not implemented")
 }
 func (UnimplementedMachineServiceServer) CPUInfo(context.Context, *emptypb.Empty) (*CPUInfoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CPUInfo not implemented")
@@ -1294,6 +1310,24 @@ type machineServiceCopyServer struct {
 
 func (x *machineServiceCopyServer) Send(m *common.Data) error {
 	return x.ServerStream.SendMsg(m)
+}
+
+func _MachineService_CPUFreqStats_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MachineServiceServer).CPUFreqStats(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MachineService_CPUFreqStats_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MachineServiceServer).CPUFreqStats(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _MachineService_CPUInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -2198,6 +2232,10 @@ var MachineService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Containers",
 			Handler:    _MachineService_Containers_Handler,
+		},
+		{
+			MethodName: "CPUFreqStats",
+			Handler:    _MachineService_CPUFreqStats_Handler,
 		},
 		{
 			MethodName: "CPUInfo",
