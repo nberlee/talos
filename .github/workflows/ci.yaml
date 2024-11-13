@@ -7,11 +7,11 @@ on:
       - "v*"
 
 env:
-  ORIGIN_REPO: nberlee/talos
-  ORIGIN_TAG: v1.8.200
-  KERNEL_TAG: v1.8.2
-  SBC_TAG: v1.8.2
-  RK3588_TAG: v1.8.2
+  ORIGIN_REPO: siderolabs/talos
+  ORIGIN_TAG: v1.8.3
+  KERNEL_TAG: v1.8.3
+  SBC_TAG: v1.8.3
+  RK3588_TAG: v1.8.3
 
 jobs:
   talos-build:
