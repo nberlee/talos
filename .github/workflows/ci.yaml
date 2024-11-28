@@ -8,10 +8,10 @@ on:
 
 env:
   ORIGIN_REPO: siderolabs/talos
-  ORIGIN_TAG: v1.8.3
-  KERNEL_TAG: v1.8.3
-  SBC_TAG: v1.8.3
-  RK3588_TAG: v1.8.3
+  ORIGIN_TAG: 60e4561b4da3ca3955d098468070175c32f2414f
+  KERNEL_TAG: v1.8.3-1-geddb1cf
+  SBC_TAG: v1.8.3-2-ge631d89
+  TARGET_TAG: v1.9.0-alpha.31
 
 jobs:
   talos-build:
@@ -27,6 +27,8 @@ jobs:
 
     steps:
       - uses: docker/setup-buildx-action@v3
+        with:
+          version: v0.19.1
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
@@ -49,7 +51,7 @@ jobs:
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             echo "PUBLISH_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
           else
-            echo "PUBLISH_TAG=${ORIGIN_TAG#*/}-${GITHUB_SHA::10}" >> $GITHUB_ENV
+            echo "PUBLISH_TAG=${TARGET_TAG}-${GITHUB_SHA::10}" >> $GITHUB_ENV
           fi
         shell: bash
 
@@ -100,7 +102,7 @@ jobs:
           TAG: ${{ env.PUBLISH_TAG }}
           PLATFORM: linux/arm64
           PROGRESS: plain
-          IMAGER_ARGS: "--base-installer-image ghcr.io/nberlee/installer:${{ env.PUBLISH_TAG }}-nosbclayer --system-extension-image ghcr.io/nberlee/rk3588:${{ env.RK3588_TAG }} --overlay-image ghcr.io/nberlee/sbc-turingrk1:${{ env.SBC_TAG }} --overlay-name=turingrk1"
+          IMAGER_ARGS: "--base-installer-image ghcr.io/nberlee/installer:${{ env.PUBLISH_TAG }}-nosbclayer --overlay-image ghcr.io/nberlee/sbc-turingrk1:${{ env.SBC_TAG }} --overlay-name=turingrk1"
 
       - name: Build an turing-rk1 installer
         run: |
@@ -112,7 +114,7 @@ jobs:
           TAG: ${{ env.PUBLISH_TAG }}
           PLATFORM: linux/arm64
           PROGRESS: plain
-          IMAGER_ARGS: "--base-installer-image ghcr.io/nberlee/installer:${{ env.PUBLISH_TAG }}-nosbclayer --system-extension-image ghcr.io/nberlee/rk3588:${{ env.RK3588_TAG }} --overlay-image ghcr.io/nberlee/sbc-turingrk1:${{ env.SBC_TAG }} --overlay-name=turingrk1"
+          IMAGER_ARGS: "--base-installer-image ghcr.io/nberlee/installer:${{ env.PUBLISH_TAG }}-nosbclayer --overlay-image ghcr.io/nberlee/sbc-turingrk1:${{ env.SBC_TAG }} --overlay-name=turingrk1"
 
       - uses: actions/upload-artifact@v3
         with:
