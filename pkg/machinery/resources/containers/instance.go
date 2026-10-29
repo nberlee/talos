@@ -66,6 +66,9 @@ type ContainerInstanceSpecSpec struct {
 	Security  ContainerSecuritySpec  `yaml:"security,omitempty" protobuf:"10"`
 	Network   ContainerNetworkSpec   `yaml:"network,omitempty" protobuf:"11"`
 	Resources ContainerResourcesSpec `yaml:"resources,omitempty" protobuf:"12"`
+
+	// ExecutionHash is the ContainerSpec execution hash the instance was created for.
+	ExecutionHash string `yaml:"executionHash,omitempty" protobuf:"13"`
 }
 
 // ResolvedMountSpec is a mount with its host-side source resolved.
