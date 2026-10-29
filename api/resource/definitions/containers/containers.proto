@@ -5,6 +5,7 @@ package talos.resource.definitions.containers;
 option go_package = "github.com/siderolabs/talos/pkg/machinery/api/resource/definitions/containers";
 option java_package = "dev.talos.api.resource.definitions.containers";
 
+import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 import "resource/definitions/enums/enums.proto";
 
@@ -60,6 +61,7 @@ message ContainerInstanceSpecSpec {
   ContainerSecuritySpec security = 10;
   ContainerNetworkSpec network = 11;
   ContainerResourcesSpec resources = 12;
+  google.protobuf.Duration stop_timeout = 13;
 }
 
 // ContainerInstanceStatusSpec is the spec for ContainerInstanceStatus.
@@ -160,6 +162,7 @@ message ContainerSpecSpec {
   ContainerNetworkSpec network = 9;
   ContainerResourcesSpec resources = 10;
   ContainerDependsOnSpec depends_on = 11;
+  google.protobuf.Duration stop_timeout = 12;
 }
 
 // ContainerStatusSpec is the spec for ContainerStatus.

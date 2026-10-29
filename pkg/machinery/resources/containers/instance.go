@@ -66,6 +66,8 @@ type ContainerInstanceSpecSpec struct {
 	Security  ContainerSecuritySpec  `yaml:"security,omitempty" protobuf:"10"`
 	Network   ContainerNetworkSpec   `yaml:"network,omitempty" protobuf:"11"`
 	Resources ContainerResourcesSpec `yaml:"resources,omitempty" protobuf:"12"`
+
+	StopTimeout time.Duration `yaml:"stopTimeout,omitempty" protobuf:"13"`
 }
 
 // ResolvedMountSpec is a mount with its host-side source resolved.

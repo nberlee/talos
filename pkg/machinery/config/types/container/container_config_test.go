@@ -7,6 +7,7 @@ package container_test
 import (
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -53,6 +54,7 @@ image: nginx
 	assert.Equal(t, "none", string(cfg.Network().Mode()))
 	assert.False(t, cfg.Resources().MemoryLimit().IsPresent())
 	assert.Empty(t, cfg.DependsOn().Paths())
+	assert.Equal(t, 10*time.Second, cfg.StopTimeout())
 }
 
 func TestContainerConfigDependsOnDeprecatedNetworks(t *testing.T) {
@@ -186,6 +188,7 @@ dependsOn:
   network:
     - addresses
   time: true
+stopTimeout: 2m
 `)
 
 	_, err := cfg.Validate(validationMode{})
@@ -197,6 +200,7 @@ dependsOn:
 	assert.Equal(t, "privileged", string(cfg.Security().Profile()))
 	assert.Equal(t, "host", string(cfg.Network().Mode()))
 	assert.True(t, cfg.DependsOn().Time())
+	assert.Equal(t, 2*time.Minute, cfg.StopTimeout())
 
 	uid, ok := cfg.RunAs().UID().Get()
 	require.True(t, ok)
@@ -404,6 +408,16 @@ mounts:
 			name:        "self dependency",
 			doc:         "name: nginx\nimage: nginx\ndependsOn:\n  containers: [nginx]",
 			expectedErr: "cannot depend on itself",
+		},
+		{
+			name:        "negative stop timeout",
+			doc:         "name: nginx\nimage: nginx\nstopTimeout: -1s",
+			expectedErr: "stopTimeout: -1s must be between 0 and 4m0s",
+		},
+		{
+			name:        "stop timeout too long",
+			doc:         "name: nginx\nimage: nginx\nstopTimeout: 5m",
+			expectedErr: "stopTimeout: 5m0s must be between 0 and 4m0s",
 		},
 	} {
 		t.Run(test.name, func(t *testing.T) {

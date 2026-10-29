@@ -8333,6 +8333,7 @@ later changes to those inputs: a spec change destroys this instance rather than 
 | security | [ContainerSecuritySpec](#talos.resource.definitions.containers.ContainerSecuritySpec) |  |  |
 | network | [ContainerNetworkSpec](#talos.resource.definitions.containers.ContainerNetworkSpec) |  |  |
 | resources | [ContainerResourcesSpec](#talos.resource.definitions.containers.ContainerResourcesSpec) |  |  |
+| stop_timeout | [google.protobuf.Duration](#google.protobuf.Duration) |  |  |
 
 
 
@@ -8490,6 +8491,7 @@ ContainerSpecSpec is the spec for ContainerSpec.
 | network | [ContainerNetworkSpec](#talos.resource.definitions.containers.ContainerNetworkSpec) |  |  |
 | resources | [ContainerResourcesSpec](#talos.resource.definitions.containers.ContainerResourcesSpec) |  |  |
 | depends_on | [ContainerDependsOnSpec](#talos.resource.definitions.containers.ContainerDependsOnSpec) |  |  |
+| stop_timeout | [google.protobuf.Duration](#google.protobuf.Duration) |  |  |
 
 
 

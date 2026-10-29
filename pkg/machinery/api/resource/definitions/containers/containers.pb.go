@@ -13,6 +13,7 @@ import (
 
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	durationpb "google.golang.org/protobuf/types/known/durationpb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 
 	enums "github.com/siderolabs/talos/pkg/machinery/api/resource/definitions/enums"
@@ -280,6 +281,7 @@ type ContainerInstanceSpecSpec struct {
 	Security      *ContainerSecuritySpec  `protobuf:"bytes,10,opt,name=security,proto3" json:"security,omitempty"`
 	Network       *ContainerNetworkSpec   `protobuf:"bytes,11,opt,name=network,proto3" json:"network,omitempty"`
 	Resources     *ContainerResourcesSpec `protobuf:"bytes,12,opt,name=resources,proto3" json:"resources,omitempty"`
+	StopTimeout   *durationpb.Duration    `protobuf:"bytes,13,opt,name=stop_timeout,json=stopTimeout,proto3" json:"stop_timeout,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -394,6 +396,13 @@ func (x *ContainerInstanceSpecSpec) GetNetwork() *ContainerNetworkSpec {
 func (x *ContainerInstanceSpecSpec) GetResources() *ContainerResourcesSpec {
 	if x != nil {
 		return x.Resources
+	}
+	return nil
+}
+
+func (x *ContainerInstanceSpecSpec) GetStopTimeout() *durationpb.Duration {
+	if x != nil {
+		return x.StopTimeout
 	}
 	return nil
 }
@@ -917,6 +926,7 @@ type ContainerSpecSpec struct {
 	Network       *ContainerNetworkSpec   `protobuf:"bytes,9,opt,name=network,proto3" json:"network,omitempty"`
 	Resources     *ContainerResourcesSpec `protobuf:"bytes,10,opt,name=resources,proto3" json:"resources,omitempty"`
 	DependsOn     *ContainerDependsOnSpec `protobuf:"bytes,11,opt,name=depends_on,json=dependsOn,proto3" json:"depends_on,omitempty"`
+	StopTimeout   *durationpb.Duration    `protobuf:"bytes,12,opt,name=stop_timeout,json=stopTimeout,proto3" json:"stop_timeout,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1024,6 +1034,13 @@ func (x *ContainerSpecSpec) GetResources() *ContainerResourcesSpec {
 func (x *ContainerSpecSpec) GetDependsOn() *ContainerDependsOnSpec {
 	if x != nil {
 		return x.DependsOn
+	}
+	return nil
+}
+
+func (x *ContainerSpecSpec) GetStopTimeout() *durationpb.Duration {
+	if x != nil {
+		return x.StopTimeout
 	}
 	return nil
 }
@@ -1238,7 +1255,7 @@ var File_resource_definitions_containers_containers_proto protoreflect.FileDescr
 
 const file_resource_definitions_containers_containers_proto_rawDesc = "" +
 	"\n" +
-	"0resource/definitions/containers/containers.proto\x12%talos.resource.definitions.containers\x1a\x1fgoogle/protobuf/timestamp.proto\x1a&resource/definitions/enums/enums.proto\"@\n" +
+	"0resource/definitions/containers/containers.proto\x12%talos.resource.definitions.containers\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a&resource/definitions/enums/enums.proto\"@\n" +
 	"\x1dContainerDependencyStatusSpec\x12\x1f\n" +
 	"\vwaiting_for\x18\x01 \x03(\tR\n" +
 	"waitingFor\"~\n" +
@@ -1255,7 +1272,7 @@ const file_resource_definitions_containers_containers_proto_rawDesc = "" +
 	"\x05phase\x18\x01 \x01(\x0e2?.talos.resource.definitions.enums.ContainersContainerImagePhaseR\x05phase\x12\x14\n" +
 	"\x05image\x18\x02 \x01(\tR\x05image\x12\x16\n" +
 	"\x06digest\x18\x03 \x01(\tR\x06digest\x12\x14\n" +
-	"\x05error\x18\x04 \x01(\tR\x05error\"\x9d\x05\n" +
+	"\x05error\x18\x04 \x01(\tR\x05error\"\xdb\x05\n" +
 	"\x19ContainerInstanceSpecSpec\x12!\n" +
 	"\fcontainer_id\x18\x01 \x01(\tR\vcontainerId\x12\x1e\n" +
 	"\n" +
@@ -1274,7 +1291,8 @@ const file_resource_definitions_containers_containers_proto_rawDesc = "" +
 	"\bsecurity\x18\n" +
 	" \x01(\v2<.talos.resource.definitions.containers.ContainerSecuritySpecR\bsecurity\x12U\n" +
 	"\anetwork\x18\v \x01(\v2;.talos.resource.definitions.containers.ContainerNetworkSpecR\anetwork\x12[\n" +
-	"\tresources\x18\f \x01(\v2=.talos.resource.definitions.containers.ContainerResourcesSpecR\tresources\"\xf7\x02\n" +
+	"\tresources\x18\f \x01(\v2=.talos.resource.definitions.containers.ContainerResourcesSpecR\tresources\x12<\n" +
+	"\fstop_timeout\x18\r \x01(\v2\x19.google.protobuf.DurationR\vstopTimeout\"\xf7\x02\n" +
 	"\x1bContainerInstanceStatusSpec\x12!\n" +
 	"\fcontainer_id\x18\x01 \x01(\tR\vcontainerId\x12\x1e\n" +
 	"\n" +
@@ -1316,7 +1334,7 @@ const file_resource_definitions_containers_containers_proto_rawDesc = "" +
 	"privileged\x12)\n" +
 	"\x10capabilities_add\x18\x02 \x03(\tR\x0fcapabilitiesAdd\x12+\n" +
 	"\x11capabilities_drop\x18\x03 \x03(\tR\x10capabilitiesDrop\x12'\n" +
-	"\x0fmachined_access\x18\x04 \x01(\bR\x0emachinedAccess\"\xec\x05\n" +
+	"\x0fmachined_access\x18\x04 \x01(\bR\x0emachinedAccess\"\xaa\x06\n" +
 	"\x11ContainerSpecSpec\x12O\n" +
 	"\x05image\x18\x01 \x01(\v29.talos.resource.definitions.containers.ContainerImageSpecR\x05image\x12\x1e\n" +
 	"\n" +
@@ -1333,7 +1351,8 @@ const file_resource_definitions_containers_containers_proto_rawDesc = "" +
 	"\tresources\x18\n" +
 	" \x01(\v2=.talos.resource.definitions.containers.ContainerResourcesSpecR\tresources\x12\\\n" +
 	"\n" +
-	"depends_on\x18\v \x01(\v2=.talos.resource.definitions.containers.ContainerDependsOnSpecR\tdependsOn\"\xdd\x02\n" +
+	"depends_on\x18\v \x01(\v2=.talos.resource.definitions.containers.ContainerDependsOnSpecR\tdependsOn\x12<\n" +
+	"\fstop_timeout\x18\f \x01(\v2\x19.google.protobuf.DurationR\vstopTimeout\"\xdd\x02\n" +
 	"\x13ContainerStatusSpec\x12P\n" +
 	"\x05state\x18\x01 \x01(\x0e2:.talos.resource.definitions.enums.ContainersContainerStateR\x05state\x12S\n" +
 	"\x06health\x18\x02 \x01(\x0e2;.talos.resource.definitions.enums.ContainersContainerHealthR\x06health\x12\x14\n" +
@@ -1385,10 +1404,11 @@ var file_resource_definitions_containers_containers_proto_goTypes = []any{
 	(*ContainerStatusSpec)(nil),                 // 13: talos.resource.definitions.containers.ContainerStatusSpec
 	(*ResolvedMountSpec)(nil),                   // 14: talos.resource.definitions.containers.ResolvedMountSpec
 	(enums.ContainersContainerImagePhase)(0),    // 15: talos.resource.definitions.enums.ContainersContainerImagePhase
-	(enums.ContainersContainerInstancePhase)(0), // 16: talos.resource.definitions.enums.ContainersContainerInstancePhase
-	(*timestamppb.Timestamp)(nil),               // 17: google.protobuf.Timestamp
-	(enums.ContainersContainerState)(0),         // 18: talos.resource.definitions.enums.ContainersContainerState
-	(enums.ContainersContainerHealth)(0),        // 19: talos.resource.definitions.enums.ContainersContainerHealth
+	(*durationpb.Duration)(nil),                 // 16: google.protobuf.Duration
+	(enums.ContainersContainerInstancePhase)(0), // 17: talos.resource.definitions.enums.ContainersContainerInstancePhase
+	(*timestamppb.Timestamp)(nil),               // 18: google.protobuf.Timestamp
+	(enums.ContainersContainerState)(0),         // 19: talos.resource.definitions.enums.ContainersContainerState
+	(enums.ContainersContainerHealth)(0),        // 20: talos.resource.definitions.enums.ContainersContainerHealth
 }
 var file_resource_definitions_containers_containers_proto_depIdxs = []int32{
 	15, // 0: talos.resource.definitions.containers.ContainerImageStatusSpec.phase:type_name -> talos.resource.definitions.enums.ContainersContainerImagePhase
@@ -1397,24 +1417,26 @@ var file_resource_definitions_containers_containers_proto_depIdxs = []int32{
 	11, // 3: talos.resource.definitions.containers.ContainerInstanceSpecSpec.security:type_name -> talos.resource.definitions.containers.ContainerSecuritySpec
 	8,  // 4: talos.resource.definitions.containers.ContainerInstanceSpecSpec.network:type_name -> talos.resource.definitions.containers.ContainerNetworkSpec
 	9,  // 5: talos.resource.definitions.containers.ContainerInstanceSpecSpec.resources:type_name -> talos.resource.definitions.containers.ContainerResourcesSpec
-	16, // 6: talos.resource.definitions.containers.ContainerInstanceStatusSpec.phase:type_name -> talos.resource.definitions.enums.ContainersContainerInstancePhase
-	17, // 7: talos.resource.definitions.containers.ContainerInstanceStatusSpec.started_at:type_name -> google.protobuf.Timestamp
-	17, // 8: talos.resource.definitions.containers.ContainerInstanceStatusSpec.finished_at:type_name -> google.protobuf.Timestamp
-	14, // 9: talos.resource.definitions.containers.ContainerMountStatusSpec.mounts:type_name -> talos.resource.definitions.containers.ResolvedMountSpec
-	2,  // 10: talos.resource.definitions.containers.ContainerSpecSpec.image:type_name -> talos.resource.definitions.containers.ContainerImageSpec
-	10, // 11: talos.resource.definitions.containers.ContainerSpecSpec.run_as:type_name -> talos.resource.definitions.containers.ContainerRunAsSpec
-	6,  // 12: talos.resource.definitions.containers.ContainerSpecSpec.mounts:type_name -> talos.resource.definitions.containers.ContainerMountSpec
-	11, // 13: talos.resource.definitions.containers.ContainerSpecSpec.security:type_name -> talos.resource.definitions.containers.ContainerSecuritySpec
-	8,  // 14: talos.resource.definitions.containers.ContainerSpecSpec.network:type_name -> talos.resource.definitions.containers.ContainerNetworkSpec
-	9,  // 15: talos.resource.definitions.containers.ContainerSpecSpec.resources:type_name -> talos.resource.definitions.containers.ContainerResourcesSpec
-	1,  // 16: talos.resource.definitions.containers.ContainerSpecSpec.depends_on:type_name -> talos.resource.definitions.containers.ContainerDependsOnSpec
-	18, // 17: talos.resource.definitions.containers.ContainerStatusSpec.state:type_name -> talos.resource.definitions.enums.ContainersContainerState
-	19, // 18: talos.resource.definitions.containers.ContainerStatusSpec.health:type_name -> talos.resource.definitions.enums.ContainersContainerHealth
-	19, // [19:19] is the sub-list for method output_type
-	19, // [19:19] is the sub-list for method input_type
-	19, // [19:19] is the sub-list for extension type_name
-	19, // [19:19] is the sub-list for extension extendee
-	0,  // [0:19] is the sub-list for field type_name
+	16, // 6: talos.resource.definitions.containers.ContainerInstanceSpecSpec.stop_timeout:type_name -> google.protobuf.Duration
+	17, // 7: talos.resource.definitions.containers.ContainerInstanceStatusSpec.phase:type_name -> talos.resource.definitions.enums.ContainersContainerInstancePhase
+	18, // 8: talos.resource.definitions.containers.ContainerInstanceStatusSpec.started_at:type_name -> google.protobuf.Timestamp
+	18, // 9: talos.resource.definitions.containers.ContainerInstanceStatusSpec.finished_at:type_name -> google.protobuf.Timestamp
+	14, // 10: talos.resource.definitions.containers.ContainerMountStatusSpec.mounts:type_name -> talos.resource.definitions.containers.ResolvedMountSpec
+	2,  // 11: talos.resource.definitions.containers.ContainerSpecSpec.image:type_name -> talos.resource.definitions.containers.ContainerImageSpec
+	10, // 12: talos.resource.definitions.containers.ContainerSpecSpec.run_as:type_name -> talos.resource.definitions.containers.ContainerRunAsSpec
+	6,  // 13: talos.resource.definitions.containers.ContainerSpecSpec.mounts:type_name -> talos.resource.definitions.containers.ContainerMountSpec
+	11, // 14: talos.resource.definitions.containers.ContainerSpecSpec.security:type_name -> talos.resource.definitions.containers.ContainerSecuritySpec
+	8,  // 15: talos.resource.definitions.containers.ContainerSpecSpec.network:type_name -> talos.resource.definitions.containers.ContainerNetworkSpec
+	9,  // 16: talos.resource.definitions.containers.ContainerSpecSpec.resources:type_name -> talos.resource.definitions.containers.ContainerResourcesSpec
+	1,  // 17: talos.resource.definitions.containers.ContainerSpecSpec.depends_on:type_name -> talos.resource.definitions.containers.ContainerDependsOnSpec
+	16, // 18: talos.resource.definitions.containers.ContainerSpecSpec.stop_timeout:type_name -> google.protobuf.Duration
+	19, // 19: talos.resource.definitions.containers.ContainerStatusSpec.state:type_name -> talos.resource.definitions.enums.ContainersContainerState
+	20, // 20: talos.resource.definitions.containers.ContainerStatusSpec.health:type_name -> talos.resource.definitions.enums.ContainersContainerHealth
+	21, // [21:21] is the sub-list for method output_type
+	21, // [21:21] is the sub-list for method input_type
+	21, // [21:21] is the sub-list for extension type_name
+	21, // [21:21] is the sub-list for extension extendee
+	0,  // [0:21] is the sub-list for field type_name
 }
 
 func init() { file_resource_definitions_containers_containers_proto_init() }
