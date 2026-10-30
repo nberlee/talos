@@ -385,7 +385,10 @@ func (suite *RuntimeSuite) createInstanceSpec(id string) {
 // declareDependencies creates the container spec of id, depending on the given containers.
 func (suite *RuntimeSuite) declareDependencies(id string, dependsOn ...string) {
 	spec := containers.NewContainerSpec(containers.NamespaceName, id)
-	spec.TypedSpec().DependsOn.Containers = dependsOn
+
+	for _, name := range dependsOn {
+		spec.TypedSpec().DependsOn.Containers = append(spec.TypedSpec().DependsOn.Containers, containers.ContainerDependencySpec{Name: name})
+	}
 
 	suite.Require().NoError(suite.State().Create(suite.Ctx(), spec))
 }

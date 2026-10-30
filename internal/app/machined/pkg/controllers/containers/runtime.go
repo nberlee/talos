@@ -691,7 +691,9 @@ func containerDependencies(ctx context.Context, r controller.Reader) (map[string
 	dependsOn := map[string][]string{}
 
 	for containerSpec := range containerSpecs.All() {
-		dependsOn[containerSpec.Metadata().ID()] = containerSpec.TypedSpec().DependsOn.Containers
+		for _, dependency := range containerSpec.TypedSpec().DependsOn.Containers {
+			dependsOn[containerSpec.Metadata().ID()] = append(dependsOn[containerSpec.Metadata().ID()], dependency.Name)
+		}
 	}
 
 	return dependsOn, nil

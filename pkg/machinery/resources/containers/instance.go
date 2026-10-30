@@ -71,6 +71,9 @@ type ContainerInstanceSpecSpec struct {
 	Devices []ResolvedDeviceSpec `yaml:"devices,omitempty" protobuf:"13"`
 
 	StopTimeout time.Duration `yaml:"stopTimeout,omitempty" protobuf:"14"`
+
+	// ExecutionHash is the ContainerSpec execution hash the instance was created for.
+	ExecutionHash string `yaml:"executionHash,omitempty" protobuf:"15"`
 }
 
 // ResolvedMountSpec is a mount with its host-side source resolved.
