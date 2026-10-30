@@ -1496,7 +1496,7 @@ ContentLibraryConfig document and backed by a volume.
 | stdin_data | [bytes](#bytes) |  | 2. send any of the below to interact with the command |
 | signal | [int32](#int32) |  |  |
 | term_resize | [DebugContainerTerminalResize](#machine.DebugContainerTerminalResize) |  |  |
-| stdin_eof | [bool](#bool) |  | stdin_eof ends the command's stdin, while signals and resizes can still be sent. |
+| stdin_eof | [bool](#bool) |  | stdin_eof ends the command's stdin, while signals and resizes can still be sent; with a terminal, stdin stays open until the command exits, as closing it would hang up the terminal. |
 
 
 

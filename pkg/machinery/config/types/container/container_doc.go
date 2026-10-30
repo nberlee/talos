@@ -117,6 +117,13 @@ func (ContainerConfigV1Alpha1) Doc() *encoder.Doc {
 				Comments:    [3]string{"" /* encoder.HeadComment */, "Conditions which must be satisfied before the container is started." /* encoder.LineComment */, "" /* encoder.FootComment */},
 			},
 			{
+				Name:        "stopTimeout",
+				Type:        "Duration",
+				Note:        "",
+				Description: "Time the container gets to exit after SIGTERM before it is killed with SIGKILL.\n\nIt applies whenever Talos stops the container: on shutdown, reboot and upgrade, when it is\nreplaced after a change or restarted with `talosctl restart`, and when it is removed.\nDefaults to 10s, at most 4m.\nChanging it replaces the running container, which is still stopped with its previous timeout.",
+				Comments:    [3]string{"" /* encoder.HeadComment */, "Time the container gets to exit after SIGTERM before it is killed with SIGKILL." /* encoder.LineComment */, "" /* encoder.FootComment */},
+			},
+			{
 				Name:        "restart",
 				Type:        "ContainerRestart",
 				Note:        "",
@@ -130,6 +137,7 @@ func (ContainerConfigV1Alpha1) Doc() *encoder.Doc {
 
 	doc.Fields[2].AddExample("", "docker.io/library/nginx:1.27")
 	doc.Fields[9].AddExample("", exampleContainerDevices())
+	doc.Fields[14].AddExample("", 30*time.Second)
 
 	return doc
 }
@@ -594,7 +602,7 @@ func (ContainerDependsOn) Doc() *encoder.Doc {
 				Name:        "containers",
 				Type:        "[]ContainerDependency",
 				Note:        "",
-				Description: "Other containers, by document name, which must be running first, or have succeeded.\n\nAn entry is either the name of a container which must be running and healthy, or a name with\na condition. Cycles are rejected when the machine configuration is applied.",
+				Description: "Other containers, by document name, which must be running first, or have succeeded.\n\nAn entry is either the name of a container which must be running and healthy, or a name with\na condition. On shutdown, reboot and upgrade, the container is stopped before them, as long as\nthat fits into the time the shutdown gives the containers; the order applies to the containers\non the same node only. Cycles are rejected when the machine configuration is applied.",
 				Comments:    [3]string{"" /* encoder.HeadComment */, "Other containers, by document name, which must be running first, or have succeeded." /* encoder.LineComment */, "" /* encoder.FootComment */},
 			},
 		},
